@@ -1,0 +1,1307 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Amap POI/AOI Collector",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/config": {
+      "get": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Get Config",
+        "operationId": "get_config_api_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Put Config",
+        "operationId": "put_config_api_config_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config/verify": {
+      "post": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Verify Config",
+        "description": "Probe the real Amap endpoints so the UI can tell the user what works.",
+        "operationId": "verify_config_api_config_verify_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/preview": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Preview Task",
+        "operationId": "preview_task_api_tasks_preview_post",
+        "parameters": [
+          {
+            "name": "max_rows",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Max Rows"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_preview_task_api_tasks_preview_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks": {
+      "get": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "List Tasks",
+        "operationId": "list_tasks_api_tasks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TaskView"
+                  },
+                  "type": "array",
+                  "title": "Response List Tasks Api Tasks Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Create Task",
+        "operationId": "create_task_api_tasks_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_task_api_tasks_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskCreated"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}": {
+      "get": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Get Task",
+        "operationId": "get_task_api_tasks__task_id__get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/run": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Run Task",
+        "operationId": "run_task_api_tasks__task_id__run_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "sync",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Sync"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/aoi": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Run Aoi",
+        "operationId": "run_aoi_api_tasks__task_id__aoi_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "sync",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Sync"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AoiRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/pause": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Pause Task",
+        "operationId": "pause_task_api_tasks__task_id__pause_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/resume": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Resume Task",
+        "operationId": "resume_task_api_tasks__task_id__resume_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/export": {
+      "get": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Export Task",
+        "operationId": "export_task_api_tasks__task_id__export_get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(csv|geojson)$",
+              "default": "csv",
+              "title": "Format"
+            }
+          },
+          {
+            "name": "crs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(gcj02|wgs84)$",
+              "default": "wgs84",
+              "title": "Crs"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/records": {
+      "get": {
+        "tags": [
+          "records"
+        ],
+        "summary": "List Records",
+        "operationId": "list_records_api_records_get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "match_level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Match Level"
+            }
+          },
+          {
+            "name": "adname",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adname"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Keyword"
+            }
+          },
+          {
+            "name": "has_aoi",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Has Aoi"
+            }
+          },
+          {
+            "name": "selected",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Selected"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "all_ids_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "All Ids Only"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "description": "Liveness probe used by the frontend and by tests.",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Api Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AoiRequest": {
+        "properties": {
+          "record_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Record Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "record_ids"
+        ],
+        "title": "AoiRequest"
+      },
+      "Body_create_task_api_tasks_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "name_column": {
+            "type": "string",
+            "title": "Name Column"
+          },
+          "adname_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adname Column"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "name_column"
+        ],
+        "title": "Body_create_task_api_tasks_post"
+      },
+      "Body_preview_task_api_tasks_preview_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_preview_task_api_tasks_preview_post"
+      },
+      "ConfigPayload": {
+        "properties": {
+          "keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keys"
+          },
+          "qps": {
+            "type": "number",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Qps",
+            "default": 3.0
+          },
+          "daily_limit_per_key": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Daily Limit Per Key",
+            "default": 4500
+          },
+          "default_region": {
+            "type": "string",
+            "title": "Default Region",
+            "default": "440100"
+          },
+          "sleep_every": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sleep Every",
+            "default": 20
+          },
+          "sleep_min_seconds": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Sleep Min Seconds",
+            "default": 3.0
+          },
+          "sleep_max_seconds": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Sleep Max Seconds",
+            "default": 8.0
+          },
+          "poi_page_size": {
+            "type": "integer",
+            "maximum": 25.0,
+            "minimum": 1.0,
+            "title": "Poi Page Size",
+            "default": 25
+          },
+          "poi_max_pages": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 1.0,
+            "title": "Poi Max Pages",
+            "default": 1
+          },
+          "typecode_prefix": {
+            "type": "string",
+            "title": "Typecode Prefix",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "ConfigPayload",
+        "description": "Request body for PUT /api/config."
+      },
+      "ConfigView": {
+        "properties": {
+          "keys_masked": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keys Masked"
+          },
+          "key_count": {
+            "type": "integer",
+            "title": "Key Count"
+          },
+          "qps": {
+            "type": "number",
+            "title": "Qps"
+          },
+          "daily_limit_per_key": {
+            "type": "integer",
+            "title": "Daily Limit Per Key"
+          },
+          "default_region": {
+            "type": "string",
+            "title": "Default Region"
+          },
+          "sleep_every": {
+            "type": "integer",
+            "title": "Sleep Every"
+          },
+          "sleep_min_seconds": {
+            "type": "number",
+            "title": "Sleep Min Seconds"
+          },
+          "sleep_max_seconds": {
+            "type": "number",
+            "title": "Sleep Max Seconds"
+          },
+          "poi_page_size": {
+            "type": "integer",
+            "title": "Poi Page Size"
+          },
+          "poi_max_pages": {
+            "type": "integer",
+            "title": "Poi Max Pages"
+          },
+          "typecode_prefix": {
+            "type": "string",
+            "title": "Typecode Prefix"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keys_masked",
+          "key_count",
+          "qps",
+          "daily_limit_per_key",
+          "default_region",
+          "sleep_every",
+          "sleep_min_seconds",
+          "sleep_max_seconds",
+          "poi_page_size",
+          "poi_max_pages",
+          "typecode_prefix"
+        ],
+        "title": "ConfigView"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PreviewResult": {
+        "properties": {
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "suggested_name_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Name Column"
+          },
+          "suggested_adname_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Adname Column"
+          },
+          "name_confidence": {
+            "type": "string",
+            "title": "Name Confidence"
+          },
+          "row_count_preview": {
+            "type": "integer",
+            "title": "Row Count Preview"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columns",
+          "rows",
+          "suggested_name_column",
+          "suggested_adname_column",
+          "name_confidence",
+          "row_count_preview"
+        ],
+        "title": "PreviewResult"
+      },
+      "RecordPage": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RecordRow"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "page",
+          "page_size",
+          "items",
+          "ids"
+        ],
+        "title": "RecordPage"
+      },
+      "RecordRow": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "task_id": {
+            "type": "integer",
+            "title": "Task Id"
+          },
+          "query_name": {
+            "type": "string",
+            "title": "Query Name"
+          },
+          "match_level": {
+            "type": "string",
+            "title": "Match Level"
+          },
+          "poi_name": {
+            "type": "string",
+            "title": "Poi Name"
+          },
+          "poi_id": {
+            "type": "string",
+            "title": "Poi Id"
+          },
+          "poi_type": {
+            "type": "string",
+            "title": "Poi Type"
+          },
+          "typecode": {
+            "type": "string",
+            "title": "Typecode"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "adname": {
+            "type": "string",
+            "title": "Adname"
+          },
+          "lng_gcj02": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng Gcj02"
+          },
+          "lat_gcj02": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat Gcj02"
+          },
+          "lng_wgs84": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng Wgs84"
+          },
+          "lat_wgs84": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat Wgs84"
+          },
+          "aoi_status": {
+            "type": "string",
+            "title": "Aoi Status"
+          },
+          "aoi_area_ha": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aoi Area Ha"
+          },
+          "selected": {
+            "type": "boolean",
+            "title": "Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "task_id",
+          "query_name",
+          "match_level",
+          "poi_name",
+          "poi_id",
+          "poi_type",
+          "typecode",
+          "address",
+          "adname",
+          "lng_gcj02",
+          "lat_gcj02",
+          "lng_wgs84",
+          "lat_wgs84",
+          "aoi_status",
+          "aoi_area_ha",
+          "selected"
+        ],
+        "title": "RecordRow"
+      },
+      "RunResult": {
+        "properties": {
+          "started": {
+            "type": "boolean",
+            "title": "Started"
+          },
+          "pending": {
+            "type": "integer",
+            "title": "Pending"
+          }
+        },
+        "type": "object",
+        "required": [
+          "started",
+          "pending"
+        ],
+        "title": "RunResult"
+      },
+      "TaskCreated": {
+        "properties": {
+          "task_id": {
+            "type": "integer",
+            "title": "Task Id"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "skipped": {
+            "type": "integer",
+            "title": "Skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "total",
+          "skipped"
+        ],
+        "title": "TaskCreated"
+      },
+      "TaskView": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "source_filename": {
+            "type": "string",
+            "title": "Source Filename"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "done": {
+            "type": "integer",
+            "title": "Done"
+          },
+          "failed": {
+            "type": "integer",
+            "title": "Failed"
+          },
+          "paused_reason": {
+            "type": "string",
+            "title": "Paused Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "source_filename",
+          "total",
+          "done",
+          "failed",
+          "paused_reason"
+        ],
+        "title": "TaskView"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VerifyResult": {
+        "properties": {
+          "key_masked": {
+            "type": "string",
+            "title": "Key Masked"
+          },
+          "key_status": {
+            "type": "string",
+            "title": "Key Status"
+          },
+          "key_message": {
+            "type": "string",
+            "title": "Key Message"
+          },
+          "geocode_status": {
+            "type": "string",
+            "title": "Geocode Status"
+          },
+          "geocode_location": {
+            "type": "string",
+            "title": "Geocode Location",
+            "default": ""
+          },
+          "geocode_formatted_address": {
+            "type": "string",
+            "title": "Geocode Formatted Address",
+            "default": ""
+          },
+          "aoi_status": {
+            "type": "string",
+            "title": "Aoi Status"
+          },
+          "aoi_message": {
+            "type": "string",
+            "title": "Aoi Message"
+          },
+          "aoi_hint": {
+            "type": "string",
+            "title": "Aoi Hint",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "key_masked",
+          "key_status",
+          "key_message",
+          "geocode_status",
+          "aoi_status",
+          "aoi_message"
+        ],
+        "title": "VerifyResult"
+      }
+    }
+  }
+}
